@@ -1,0 +1,38 @@
+# Arquivos do Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pyd
+*.so
+*.dll
+
+# Ambiente virtual
+venv/
+env/
+ENV/
+.venv/
+
+# Configurações locais
+*.env
+*.ini
+*.cfg
+*.local
+.env.*
+
+# Banco de dados SQLite
+db.sqlite3
+db.sqlite3-journal
+
+# Arquivos do Django
+media/
+staticfiles/
+static/
+*.log
+core/local_settings
+
+# Migrations compiladas (não ignore os arquivos de migração em si!)
+*/migrations/__pycache__/
+# (Se quiser ignorar migrações completamente — não recomendado — adicione:)
+# */migrations*
