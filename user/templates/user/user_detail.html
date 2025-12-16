@@ -1,0 +1,108 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <div class="mb-6">
+        <a href="{% url 'user:index' %}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            <svg class="w-4 h-4 mr-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+            </svg>
+            Voltar para a lista
+        </a>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-3xl mx-auto border border-gray-200">
+        
+        <div class="px-6 py-8 sm:px-8 bg-gray-50 border-b border-gray-200 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left space-y-4 sm:space-y-0 sm:space-x-6">
+            
+            <div class="flex-shrink-0">
+                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-blue-600">
+                    <span class="text-3xl font-medium text-white leading-none">
+                        {{ user.first_name|first|upper }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="flex-1 pt-2">
+                <h1 class="text-3xl font-bold text-gray-900 leading-tight">
+                    {{ user.first_name }} {{ user.last_name }}
+                </h1>
+                <p class="text-sm font-medium text-gray-500 mt-1">
+                    {{ user.email }}
+                </p>
+                
+                <div class="mt-3">
+                    {% if user.is_active %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Ativo
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Inativo
+                        </span>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                         <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            Staff
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 px-6 py-5 sm:p-0">
+            <dl class="sm:divide-y sm:divide-gray-200">
+                
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Nome Completo
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </dd>
+                </div>
+
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Endereço de Email
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ user.email }}
+                    </dd>
+                </div>
+
+                 <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Telefone
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ user.phone|default:"Não informado" }}
+                    </dd>
+                </div>
+
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
+                    <dt class="text-sm font-medium text-gray-500">
+                        ID do Sistema
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 font-mono bg-gray-50 inline-block rounded px-2 py-0.5">
+                        #{{ user.id }}
+                    </dd>
+                </div>
+
+                 <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Cadastrado em
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ user.date_joined|date:"d/m/Y H:i" }}
+                    </dd>
+                </div>
+
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock %}
