@@ -15,3 +15,11 @@ def register(request):
                         form.save()
                         messages.success(request, 'Usuário registrado')
                         return redirect('user:index')
+                
+        return render(
+                request,
+                'user/register.html',
+                {
+                        'form': form
+                }
+        )
