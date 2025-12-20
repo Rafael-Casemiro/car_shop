@@ -6,7 +6,7 @@ from .models import Car
 
 def register_car(request):
         if request.method == 'POST':
-                form = CarForm(request.POST)
+                form = CarForm(request.POST, request.FILES)
 
                 if form.is_valid():
                         car_instance = form.save(commit=False)
@@ -19,7 +19,7 @@ def register_car(request):
 
                         car_instance.save()
 
-                        return redirect('user:index')
+                        return redirect('car:car_list')
         else:
                 form = CarForm()
         
@@ -44,4 +44,3 @@ def car_list(request):
                 context
         )
         
-

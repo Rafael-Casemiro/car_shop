@@ -7,15 +7,15 @@
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Cadastrar Veículo</h2>
-            <p class="text-gray-500 mt-2">Insira as informações técnicas e o valor</p>
+            <p class="text-gray-500 mt-2">Insira as informações técnicas, valor e foto</p>
         </div>
 
-        <form method="POST" class="space-y-6">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -27,10 +27,27 @@
             {% endif %}
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Foto do Veículo</label>
+                    <div class="flex items-center space-x-4 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                        <label class="cursor-pointer bg-white hover:bg-gray-100 text-blue-600 px-4 py-2 rounded-md border border-blue-200 transition-colors text-sm font-bold shadow-sm">
+                            Selecionar arquivo
+                            <input type="file" name="picture" id="id_picture" class="sr-only" accept="image/*" onchange="updateFileName(this)">
+                        </label>
+                        <span id="file-name-display" class="text-sm text-gray-500 italic truncate max-w-[200px]">
+                            Nenhum arquivo selecionado
+                        </span>
+                    </div>
+                    {% for error in form.picture.errors %}
+                        <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
                 <div class="md:col-span-1">
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Placa</label>
                     <input type="text" name="license_plate" value="{{ form.license_plate.value|default:'' }}"
-                        class="w-full px-4 py-2 border {% if form.license_plate.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase placeholder:normal-case"
+                        class="w-full px-4 py-2 border {% if form.license_plate.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
                         placeholder="ABC-1234">
                     {% for error in form.license_plate.errors %}
                         <span class="text-red-500 text-xs mt-1">{{ error }}</span>
@@ -38,10 +55,10 @@
                 </div>
 
                 <div class="md:col-span-1">
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Ano de Fabricação</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Ano</label>
                     <input type="number" name="manufacturing_year" value="{{ form.manufacturing_year.value|default:'' }}"
                         class="w-full px-4 py-2 border {% if form.manufacturing_year.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        placeholder="Ex: 2023">
+                        placeholder="Ex: 2024">
                     {% for error in form.manufacturing_year.errors %}
                         <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                     {% endfor %}
@@ -51,7 +68,7 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Marca</label>
                     <input type="text" name="brand" value="{{ form.brand.value|default:'' }}"
                         class="w-full px-4 py-2 border {% if form.brand.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        placeholder="Ex: Toyota">
+                        placeholder="Ex: Honda">
                     {% for error in form.brand.errors %}
                         <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                     {% endfor %}
@@ -61,7 +78,7 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Modelo</label>
                     <input type="text" name="model" value="{{ form.model.value|default:'' }}"
                         class="w-full px-4 py-2 border {% if form.model.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        placeholder="Ex: Corolla">
+                        placeholder="Ex: Civic">
                     {% for error in form.model.errors %}
                         <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                     {% endfor %}
@@ -88,14 +105,28 @@
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.01] shadow-lg">
                     Salvar Veículo
                 </button>
-                
-                <a href="#" 
-                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-lg transition-all duration-200 text-center">
+                <a href="{% url 'car:car_list' %}" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-lg text-center transition-all">
                     Cancelar
                 </a>
             </div>
         </form>
     </div>
-
 </div>
+
+<script>
+function updateFileName(input) {
+    const display = document.getElementById('file-name-display');
+    if (input.files && input.files[0]) {
+        // Exibe o nome do arquivo selecionado
+        display.innerText = input.files[0].name;
+        display.classList.remove('italic', 'text-gray-500');
+        display.classList.add('text-blue-600', 'font-bold');
+    } else {
+        // Volta ao estado original se o usuário cancelar a seleção
+        display.innerText = "Nenhum arquivo selecionado";
+        display.classList.add('italic', 'text-gray-500');
+        display.classList.remove('text-blue-600', 'font-bold');
+    }
+}
+</script>
 {% endblock %}
