@@ -1,0 +1,102 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+<div class="min-h-screen w-full bg-gray-50 p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">Catálogo de Veículos</h2>
+            <p class="text-lg text-gray-600 mt-3">Encontre o carro dos seus sonhos e realize a compra agora mesmo.</p>
+            <div class="h-1 w-20 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900 text-white uppercase text-xs font-bold tracking-widest">
+                            <th class="px-8 py-5">Veículo</th>
+                            <th class="px-6 py-5 text-center">Ano</th>
+                            <th class="px-6 py-5 text-center">Placa</th>
+                            <th class="px-6 py-5 text-center">Preço</th>
+                            <th class="px-8 py-5 text-right">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for car in page_obj %}
+                        <tr class="hover:bg-blue-50/40 transition-all group">
+                            <td class="px-8 py-6">
+                                <div class="flex items-center">
+                                    <div class="h-12 w-12 flex-shrink-0 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-5">
+                                        <div class="text-sm font-black text-slate-900 uppercase tracking-tight">{{ car.brand }}</div>
+                                        <div class="text-base text-slate-500 font-medium">{{ car.model }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-6 text-center text-sm font-semibold text-slate-700">
+                                {{ car.manufacturing_year }}
+                            </td>
+                            <td class="px-6 py-6 text-center">
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-mono font-bold rounded-lg border border-slate-200">
+                                    {{ car.license_plate }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-6 text-center">
+                                <span class="text-xl font-extrabold text-blue-700">
+                                    R$ {{ car.price }}
+                                </span>
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <form action="#" method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-full transition-all shadow-md hover:shadow-green-200 active:scale-95">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        Comprar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-8 py-20 text-center">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-xl text-gray-500 font-medium">Ops! Nenhum carro disponível para venda.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if is_paginated %}
+            <div class="px-8 py-5 bg-slate-50 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-sm text-slate-500 font-medium">
+                    Mostrando página <span class="text-slate-900 font-bold">{{ page_obj.number }}</span> de {{ page_obj.paginator.num_pages }}
+                </span>
+                <nav class="flex gap-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-white border border-gray-200 text-slate-600 rounded-xl hover:bg-gray-50 transition-colors text-sm font-bold shadow-sm">Anterior</a>
+                    {% endif %}
+                    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors text-sm font-bold shadow-md">Próxima</a>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
