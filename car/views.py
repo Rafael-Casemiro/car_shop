@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from .forms import CarForm
 from .models import Car
@@ -44,3 +44,19 @@ def car_list(request):
                 context
         )
         
+
+def car_details(request, car_id):
+        car = get_object_or_404(Car, pk=car_id)
+        
+        user = request.user
+
+        context = {
+                'car': car,
+                'vendedor': user
+        }
+
+        return render(
+                request,
+                'car/car_details.html',
+                {'car': car}
+        )
