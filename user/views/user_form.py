@@ -45,4 +45,9 @@ def login_view(request):
                         'form': form
                 }
         )
-        
+
+
+def logout_view(request):
+        auth.logout(request)
+        messages.success(request, 'Logout realizado com sucesso!')
+        return redirect('user:login')
