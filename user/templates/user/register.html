@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
-    
+
     <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800">Criar Conta</h2>
@@ -13,28 +13,28 @@
             {% csrf_token %}
 
             {% if form.non_field_errors %}
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-                    {% for error in form.non_field_errors %}
-                        <p class="text-red-700 text-sm">{{ error }}</p>
-                    {% endfor %}
-                </div>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                {% for error in form.non_field_errors %}
+                <p class="text-red-700 text-sm">{{ error }}</p>
+                {% endfor %}
+            </div>
             {% endif %}
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                    <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" 
+                    <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}"
                         class="w-full px-4 py-2 border {% if form.first_name.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
                     {% for error in form.first_name.errors %}
-                        <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                    <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                     {% endfor %}
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Sobrenome</label>
-                    <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" 
+                    <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}"
                         class="w-full px-4 py-2 border {% if form.last_name.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
                     {% for error in form.last_name.errors %}
-                        <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                    <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 <input type="email" name="email" value="{{ form.email.value|default:'' }}" placeholder="seu@email.com"
                     class="w-full px-4 py-2 border {% if form.email.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
                 {% for error in form.email.errors %}
-                    <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                 {% endfor %}
             </div>
 
@@ -53,27 +53,27 @@
                 <input type="text" name="phone" value="{{ form.phone.value|default:'' }}"
                     class="w-full px-4 py-2 border {% if form.phone.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
                 {% for error in form.phone.errors %}
-                    <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                <span class="text-red-500 text-xs mt-1">{{ error }}</span>
                 {% endfor %}
             </div>
 
             {% for field in form %}
-                {% if "password" in field.name %}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
-                        class="w-full px-4 py-2 border {% if field.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
-                    {% if field.help_text %}
-                        <p class="text-gray-400 text-[10px] mt-1 leading-tight">{{ field.help_text|safe }}</p>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <span class="text-red-500 text-xs mt-1">{{ error }}</span>
-                    {% endfor %}
-                </div>
+            {% if "password" in field.name %}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
+                    class="w-full px-4 py-2 border {% if field.errors %}border-red-500{% else %}border-gray-300{% endif %} rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none outline-none transition-all">
+                {% if field.help_text %}
+                <p class="text-gray-400 text-[10px] mt-1 leading-tight">{{ field.help_text|safe }}</p>
                 {% endif %}
+                {% for error in field.errors %}
+                <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
             {% endfor %}
 
-            <button type="submit" 
+            <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 shadow-md">
                 Criar Conta
             </button>
