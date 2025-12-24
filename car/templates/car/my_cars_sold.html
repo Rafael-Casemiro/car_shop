@@ -1,0 +1,91 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-gray-900">Meus Carros Vendidos</h2>
+                <p class="text-gray-500 mt-1">Histórico de veículos que você negociou com sucesso.</p>
+            </div>
+            <div class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-bold">
+                {{ page_obj.paginator.count }} Vendas
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6">
+            {% for car in page_obj %}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
+                    
+                    <div class="w-full md:w-64 h-48 md:h-auto overflow-hidden bg-gray-200">
+                        {% if car.picture %}
+                            <img src="{{ car.picture.url }}" alt="{{ car.model }}" class="w-full h-full object-cover">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex-1 p-6 flex flex-col justify-between">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">{{ car.brand }}</span>
+                                <h3 class="text-xl font-bold text-gray-900 uppercase">{{ car.model }}</h3>
+                                <p class="text-sm text-gray-500 font-mono">{{ car.license_plate }} • {{ car.manufacturing_year }}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-lg font-black text-gray-900 text-green-600">R$ {{ car.price }}</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
+                                    Vendido
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-gray-50 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                                    {{ car.buyer.first_name|first|upper }}
+                                </div>
+                                <span class="text-sm text-gray-600">Comprador: <span class="font-semibold">{{ car.buyer.first_name }} {{ car.buyer.last_name }}</span></span>
+                            </div>
+                            <a href="{% url 'car:car_details' car.id %}" class="text-indigo-600 hover:text-indigo-800 text-sm font-bold transition-colors">
+                                Ver detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1" />
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 italic">Você ainda não vendeu nenhum carro.</h3>
+                    <p class="text-gray-500 mt-1">Seus carros vendidos aparecerão aqui.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated or page_obj.has_other_pages %}
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow-sm">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-white border border-gray-300 rounded-l-md text-sm font-medium text-gray-700 hover:bg-gray-50">Anterior</a>
+                {% endif %}
+                <span class="px-4 py-2 bg-indigo-600 border border-indigo-600 text-sm font-bold text-white">
+                    {{ page_obj.number }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-white border border-gray-300 rounded-r-md text-sm font-medium text-gray-700 hover:bg-gray-50">Próxima</a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
