@@ -1,6 +1,6 @@
 # 🚗 Car Shop
 
-**Car Shop** é uma plataforma web de marketplace automotivo desenvolvida com **Django**. O sistema permite que utilizadores se registem, anunciem os seus veículos para venda e comprem veículos de outros utilizadores, simulando um ambiente real de negociação com controlo de inventário e histórico de transações.
+**Car Shop** é uma plataforma web de marketplace automotivo desenvolvida com **Django**. O sistema permite que utilizadores se registem, anunciem os seus veículos para venda e comprem veículos de outros utilizadores, simulando um ambiente real de negociação com controle de inventário e histórico de transações.
 
 ---
 
